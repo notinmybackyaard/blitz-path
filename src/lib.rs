@@ -17,5 +17,6 @@ mod route;
 mod utils;
 
 pub use astar::a_star_path;
+pub use astar::a_star_next_coord;
 pub use jps::jps_path;
 pub use route::Route;

@@ -106,7 +106,7 @@ pub fn a_star_path<U, T: Map2D<U>>(map: &T, start: Coords2D, goal: Coords2D) -> 
     None
 }
 
-pub fn a_star_path_modified<F>(start: Coords2D, goal: Coords2D, successors: F) -> Option<Coords2D>
+pub fn a_star_next_coord<F>(start: Coords2D, goal: Coords2D, successors: F) -> Option<Coords2D>
     where F: Fn(Coords2D) -> Vec<Coords2D>
 {
     if start == goal {
