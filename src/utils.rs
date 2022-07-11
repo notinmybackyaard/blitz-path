@@ -72,3 +72,19 @@ fn shift(node: Coords2D, direction: (i32, i32)) -> Coords2D {
         (node.1 as i32 + direction.1) as usize,
     )
 }
+
+pub fn neighbors(node: Coords2D) -> Vec<Coords2D> {
+    let mut neighbors = Vec::with_capacity(8);
+    let (x, y) = (node.0, node.1);
+
+    neighbors.push((x - 1, y - 1));
+    neighbors.push((x, y - 1));
+    neighbors.push((x + 1, y - 1));
+    neighbors.push((x - 1, y));
+    neighbors.push((x + 1, y));
+    neighbors.push((x - 1, y + 1));
+    neighbors.push((x, y + 1));
+    neighbors.push((x + 1, y + 1));
+
+    neighbors
+}

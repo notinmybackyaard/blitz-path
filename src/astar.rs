@@ -4,7 +4,7 @@ use movingai::Coords2D;
 use movingai::Map2D;
 
 use crate::node::Node;
-use crate::utils::{distance, rewind};
+use crate::utils::{distance, neighbors, rewind};
 use crate::Route;
 
 ///Creates a new route using the A* algorithm.
@@ -106,8 +106,8 @@ pub fn a_star_path<U, T: Map2D<U>>(map: &T, start: Coords2D, goal: Coords2D) -> 
     None
 }
 
-pub fn a_star_next_coord<F>(start: Coords2D, goal: Coords2D, successors: F) -> Option<Coords2D>
-    where F: Fn(Coords2D) -> Vec<Coords2D>
+pub fn a_star_next_coord<F>(start: Coords2D, goal: Coords2D, is_movable: F) -> Option<Coords2D>
+    where F: Fn(&Coords2D) -> bool
 {
     if start == goal {
         return None;
@@ -135,8 +135,12 @@ pub fn a_star_next_coord<F>(start: Coords2D, goal: Coords2D, successors: F) -> O
             return Some(path[0]);
         }
 
+        let successors: Vec<Coords2D> = neighbors(node_current.position)
+                                                    .into_iter()
+                                                    .filter(&is_movable)
+                                                    .collect();
         //Setup successor nodes
-        for successor in successors(node_current.position) {
+        for successor in successors {
             //Calculate distances
             let distance_to_goal = distance(successor, goal);
             let distance_from_parent = distance(node_current.position, successor);
