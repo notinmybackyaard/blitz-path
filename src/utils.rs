@@ -77,14 +77,23 @@ pub fn neighbors(node: Coords2D) -> Vec<Coords2D> {
     let mut neighbors = Vec::with_capacity(8);
     let (x, y) = (node.0, node.1);
 
-    neighbors.push((x - 1, y - 1));
-    neighbors.push((x, y - 1));
-    neighbors.push((x + 1, y - 1));
-    neighbors.push((x - 1, y));
-    neighbors.push((x + 1, y));
-    neighbors.push((x - 1, y + 1));
-    neighbors.push((x, y + 1));
-    neighbors.push((x + 1, y + 1));
+    vec![(-1,-1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)]
+        .iter()
+        .map(|&(dx, dy)| (x as i64 + dx, y as i64 + dy))
+        .filter(|&(x, y)| x >= 0 && y >= 0)
+        .map(|(x, y)| (x as usize, y as usize))
+        .for_each(|(x, y)| neighbors.push((x, y)));
 
     neighbors
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::utils::neighbors;
+
+    #[test]
+    fn neighbors_test() {
+        let vec = neighbors((0, 0));
+        assert_ne!(vec, vec![(0, 1), (1, 0)]);
+    }
 }
