@@ -132,7 +132,9 @@ pub fn a_star_next_coord<F>(start: Coords2D, goal: Coords2D, is_movable: F) -> O
         //If this is the target node return the distance to get there
         if node_current.position == goal {
             let path = rewind(&node_current, &closed);
-            return Some(path[0]);
+            if path.len() < 2 { return None;}
+            let next_node_index = path.len() - 2;
+            return Some(path[next_node_index]);
         }
 
         let successors: Vec<Coords2D> = neighbors(node_current.position)
